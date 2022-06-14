@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onetohundredrecycler.models.NumberData
@@ -13,6 +14,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: List<NumberData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
         return NumberViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
         )
@@ -22,6 +24,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is NumberViewHolder -> {
                 holder.bind(items[position])
+//                holder.setIsRecyclable(false);
             }
         }
     }
@@ -35,13 +38,35 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         Log.d("list0", items.toString())
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
-    class NumberViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    class NumberViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView)  {
         private val numDisplay: TextView = itemView.text
+        private val plusButton: Button = itemView.plus_button
+        private val minusButton: Button = itemView.minus_button
 
 
         fun bind(numData: NumberData) {
             numDisplay.text = (numData.number).toString()
+            plusButton.setOnClickListener{
+                val newNumber = numDisplay.text.toString().toInt() + 1
+                if (newNumber != 101){
+                    numDisplay.text = newNumber.toString()
+                }
+                Log.d("new_number", newNumber.toString())
+            }
+            minusButton.setOnClickListener{
+                val newNumberMinus = numDisplay.text.toString().toInt() -1
+                if (newNumberMinus != 0){
+                    numDisplay.text = newNumberMinus.toString()
+                }
+
+            }
+
         }
+
     }
 }

@@ -28,18 +28,10 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    private fun createDataSet2(): IntArray {
-        val numbers = IntArray(100) { (it + 1) }
-        Log.d("numbers", numbers.toString())
-        return numbers
-    }
-
     private fun addDataSet() {
         val data = createDataSet()
         Log.d("data_watch", data.toString())
         numAdapter.submitList(data)
-//        val data2 = createDataSet2()
-//        numAdapter.submitList2(data2)
     }
 
     private fun initRecyclerView() {
