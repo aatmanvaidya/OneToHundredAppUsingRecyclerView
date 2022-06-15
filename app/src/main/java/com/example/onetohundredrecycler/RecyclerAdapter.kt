@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.list_item.view.*
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: List<NumberData> = ArrayList()
+    override fun getItemViewType(position: Int): Int = position
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -24,9 +25,11 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is NumberViewHolder -> {
                 holder.bind(items[position])
-//                holder.setIsRecyclable(false);
+                holder.getItemViewType()
+                holder.itemView.isEnabled = true
             }
         }
+        holder.setIsRecyclable(false) //adding this and below line for testing app
     }
 
     override fun getItemCount(): Int {
@@ -38,12 +41,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         Log.d("list0", items.toString())
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
-
-
-    class NumberViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView)  {
+    class NumberViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val numDisplay: TextView = itemView.text
         private val plusButton: Button = itemView.plus_button
         private val minusButton: Button = itemView.minus_button
@@ -51,17 +49,19 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(numData: NumberData) {
             numDisplay.text = (numData.number).toString()
-            plusButton.setOnClickListener{
+            plusButton.setOnClickListener {
                 val newNumber = numDisplay.text.toString().toInt() + 1
-                if (newNumber != 101){
+                if (newNumber != 101) {
                     numDisplay.text = newNumber.toString()
+                    numData.number = newNumber
                 }
                 Log.d("new_number", newNumber.toString())
             }
-            minusButton.setOnClickListener{
-                val newNumberMinus = numDisplay.text.toString().toInt() -1
-                if (newNumberMinus != 0){
+            minusButton.setOnClickListener {
+                val newNumberMinus = numDisplay.text.toString().toInt() - 1
+                if (newNumberMinus != 0) {
                     numDisplay.text = newNumberMinus.toString()
+                    numData.number = newNumberMinus
                 }
 
             }
